@@ -10,7 +10,7 @@ require Exporter;
 @ISA       = qw(Exporter);
 @EXPORT_OK = qw(get_Z get_symbol get_name);
 @EXPORT    = qw();
-$VERSION   = '97.1102';
+$VERSION   = 0.91;
 
 sub Version { return $VERSION };
 
@@ -282,7 +282,7 @@ sub new
 		}
 	else
 		{
-		return undef;
+		return;
 		}
 
 	return $self;
@@ -298,7 +298,7 @@ sub Z
 	unless( _is_Z $data )
 		{
 		$self->error('$data is not a valid proton number');
-		return undef;
+		return;
 		}
 
 	$self->{'Z'}      = $data;
@@ -318,7 +318,7 @@ sub name
 	unless( _is_name $data)
 		{
 		$self->error('$data is not a valid name');
-		return undef;
+		return;
 		}
 
 	$self->{'name'}   = _format_name $data;
@@ -338,7 +338,7 @@ sub symbol
 	unless( _is_symbol $data )
 		{
 		$self->error('$data is not a valid chemical symbol');
-		return undef;
+		return;
 		}
 
 	$self->{'symbol'} = _format_symbol $data;
@@ -361,14 +361,14 @@ sub get_symbol
 	return _format_symbol $thingy if _is_symbol $thingy;
 
 	#we were passed something wierd.  pretend we don't know anything.
-	return undef;
+	return;
 	}
 
 sub _get_symbol_by_name
 	{
 	my $name = shift;
 	
-	return undef unless _is_name $name;
+	return unless _is_name $name;
 
 	$name = _format_name $name;
 
@@ -379,7 +379,7 @@ sub _get_symbol_by_name
 		return $elements{$_}
 		}
 
-	return undef;
+	return;
 	}
 
 sub _get_symbol_by_Z
@@ -388,11 +388,11 @@ sub _get_symbol_by_Z
 
 	#just in case we were passed a symbol rather
 	#then a number
-	return undef unless _is_Z $Z;
+	return unless _is_Z $Z;
 
 	return $elements{$Z} if defined $elements{$Z};
 
-	return undef;
+	return;
 	}
 
 sub get_name
@@ -408,14 +408,12 @@ sub get_name
 	return _format_name $thingy if _is_name $thingy;
 
 	#we were passed something wierd.  pretend we don't know anything.
-	return undef;
+	return;
 	}
 
 
 sub _get_name_by_symbol
 	{
-	#if the data are bad, then these functions will return undef
-	#in which case so will we.
 	return _get_name_by_Z( _get_Z_by_symbol(shift) );
 	}
 
@@ -423,7 +421,7 @@ sub _get_name_by_Z
 	{
 	my $Z = shift;
 
-	return undef unless _is_Z $Z;
+	return unless _is_Z $Z;
 
 	#not much we can do if they don't pass a proper number
 	if( defined $names{$Z} )
@@ -431,7 +429,7 @@ sub _get_name_by_Z
 		return $names{$Z};
 		}
 	
-	return undef;
+	return;
 	}
 
 sub get_Z
@@ -447,7 +445,7 @@ sub get_Z
 	return $thingy if _is_Z $thingy;
 
 	#we were passed something wierd.  pretend we don't know anything.
-	return undef;
+	return;
 	}
 
 sub _get_Z_by_name
@@ -464,7 +462,7 @@ sub _get_Z_by_name
 			}
 		}
 
-	return undef;
+	return;
 	}
 
 sub _get_Z_by_symbol
@@ -482,7 +480,7 @@ sub _get_Z_by_symbol
 		return $elements{$symbol};
 		}
 
-	return undef;
+	return;
 	}
 
 ########################################################################
@@ -578,7 +576,7 @@ sub AUTOLOAD
 	my $self = shift;
 	my $data = shift;
 
-	return undef unless ref $self;
+	return unless ref $self;
 
 	my $method_name = $AUTOLOAD;
 
@@ -594,7 +592,7 @@ sub AUTOLOAD
 		}
 	else
 		{
-		return undef;
+		return;
 		}
 	}
 
@@ -692,7 +690,7 @@ chemcial symbols of mixed and single case).
 	$name = get_symbol('Iron');   #$name is 'Fe'
 	$name = get_symbol('iron');   #$name is 'Fe'
 
-If no symbol can be found, undef is returned.
+If no symbol can be found, nothing is returned.
 
 Since this function will return the symbol if it is given a symbol,
 you can use it to test whether a string is a chemical symbol
@@ -720,7 +718,7 @@ chemcial symbols of mixed and single case).
 	$name = get_name('Iron');   #$name is 'Iron'
 	$name = get_name('iron');   #$name is 'Iron'
 
-If there is no Z can be found, undef is returned.
+If there is no Z can be found, nothing is returned.
 
 Since this function will return the name if it is given a name,
 you can use it to test whether a string is a chemical element name
@@ -748,7 +746,7 @@ number.  The function does its best to interpret inconsistent input data
 	$name = get_Z('Iron');   #$name is 26
 	$name = get_Z('iron');   #$name is 26
 
-If there is no Z can be found, undef is returned.
+If there is no Z can be found, nothing is returned.
 
 Since this function will return the Z if it is given a Z,
 you can use it to test whether a string is an atomic number.
@@ -781,7 +779,7 @@ an argument to your pretend method:
 	$datum = $element->molar_mass;
 
 If a value has not been associated with the pretend method and the
-object, the pretend method returns undef.
+object, the pretend method returns nothing.
 
 I had thought about providing basic data for the elements, but
 thought that anyone using this module would probably have their
@@ -798,6 +796,6 @@ so that i can include it in future releases :)
 
 =head1 AUTHOR
 
-brian d foy <comdog@computerdog.com>
+brian d foy <comdog@panix.com>
 
 =cut
