@@ -1,4 +1,4 @@
-# $Id: test_manifest 2568 2008-06-29 00:31:48Z comdog $
+# $Id$
 compile.t
 pod.t
 pod_coverage.t

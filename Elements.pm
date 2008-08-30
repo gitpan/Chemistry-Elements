@@ -17,7 +17,7 @@ require Exporter;
 @ISA       = qw(Exporter);
 @EXPORT_OK = qw(get_Z get_symbol get_name);
 @EXPORT    = qw();
-$VERSION   = '1.05_01';
+$VERSION   = '1.05_02';
 
 use subs qw(
 	_get_name_by_Z
@@ -86,7 +86,7 @@ $Default_language = $Languages{'English'};
  12 => [ qw( Agnesiummai Magnesium ) ],
  13 => [ qw( Luminiumaai Aluminium ) ],
  14 => [ qw( Iliconsai Silicon ) ],
- 15 => [ qw( Hosphorouspai Phosphorous ) ],
+ 15 => [ qw( Hosphoruspai Phosphorus ) ],
  16 => [ qw( Ulfursai Sulfur ) ],
  17 => [ qw( Hlorinecai Chlorine ) ],
  18 => [ qw( Rgonaai Argon ) ],
@@ -98,7 +98,7 @@ $Default_language = $Languages{'English'};
  24 => [ qw( Hromiumcai Chromium ) ],
  25 => [ qw( Anganesemai Manganese ) ],
  26 => [ qw( Roniai Iron ) ],
- 27 => [ qw( Oboltcai Cobolt ) ],
+ 27 => [ qw( Obaltcai Cobalt ) ],
  28 => [ qw( Ickelnai Nickel ) ],
  29 => [ qw( Oppercai Copper ) ],
  30 => [ qw( Inczai Zinc ) ],
@@ -112,12 +112,12 @@ $Default_language = $Languages{'English'};
  38 => [ qw( Trontiumsai Strontium ) ],
  39 => [ qw( Ttriumyai Yttrium ) ],
  40 => [ qw( Irconiumzai Zirconium ) ],
- 41 => [ qw( Obiumnai Nobium ) ],
+ 41 => [ qw( Iobiumnai Niobium ) ],
  42 => [ qw( Olybdenummai Molybdenum ) ],
  43 => [ qw( Echnetiumtai Technetium ) ],
  44 => [ qw( Utheniumrai Ruthenium ) ],
  45 => [ qw( Hodiumrai Rhodium ) ],
- 46 => [ qw( Aladiumpai Paladium ) ],
+ 46 => [ qw( Alladiumpai Palladium ) ],
  47 => [ qw( Ilversai Silver ) ],
  48 => [ qw( Admiumcai Cadmium ) ],
  49 => [ qw( Ndiumiai Indium ) ],
@@ -130,7 +130,7 @@ $Default_language = $Languages{'English'};
  56 => [ qw( Ariumbai Barium ) ],
  57 => [ qw( Anthanumlai Lanthanum ) ],
  58 => [ qw( Eriumcai Cerium ) ],
- 59 => [ qw( Raesodiumpai Praesodium ) ],
+ 59 => [ qw( Raesodymiumpai Praesodymium ) ],
  60 => [ qw( Eodymiumnai Neodymium ) ],
  61 => [ qw( Romethiumpai Promethium ) ],
  62 => [ qw( Amariumsai Samarium ) ],
@@ -152,7 +152,7 @@ $Default_language = $Languages{'English'};
  78 => [ qw( Latinumpai Platinum ) ],
  79 => [ qw( Oldgai Gold ) ],
  80 => [ qw( Ercurymai Mercury ) ],
- 81 => [ qw( Haliumtai Thalium ) ],
+ 81 => [ qw( Halliumtai Thallium ) ],
  82 => [ qw( Eadlai Lead ) ],
  83 => [ qw( Ismuthbai Bismuth ) ],
  84 => [ qw( Oloniumpai Polonium ) ],
@@ -160,7 +160,7 @@ $Default_language = $Languages{'English'};
  86 => [ qw( Adonrai Radon ) ],
  87 => [ qw( Ranciumfai Francium ) ],
  88 => [ qw( Adiumrai Radium ) ],
- 89 => [ qw( Ctinumaai Actinum ) ],
+ 89 => [ qw( Ctiniumaai Actinium ) ],
  90 => [ qw( Horiumtai Thorium ) ],
  91 => [ qw( Rotactiniumpai Protactinium ) ],
  92 => [ qw( Raniumuai Uranium ) ],
@@ -592,9 +592,9 @@ Chemistry::Elements - Perl extension for working with Chemical Elements
   use Chemistry::Elements qw(get_name get_Z get_symbol);
 
   # the constructor can use different input
-  $element = new Chemistry::Elements $atomic_number;
-  $element = new Chemistry::Elements $chemical_symbol;
-  $element = new Chemistry::Elements $element_name;
+  $element = Chemistry::Elements->new( $atomic_number   );
+  $element = Chemistry::Elements->new( $chemical_symbol );
+  $element = Chemistry::Elements->new( $element_name    );
 
   # you can make up your own attributes by specifying
   # a method (which is really AUTOLOAD)
@@ -622,9 +622,9 @@ pass it an atomic number, chemical symbol, or element name and it
 tries to create the object.
 
   # the constructor can use different input
-  $element = new Chemistry::Elements $atomic_number;
-  $element = new Chemistry::Elements $chemical_symbol;
-  $element = new Chemistry::Elements $element_name;
+  $element = Chemistry::Elements->new( $atomic_number );
+  $element = Chemistry::Elements->new( $chemical_symbol );
+  $element = Chemistry::Elements->new( $element_name );
 
 once you have the object, you can define your own methods simply
 by using them.  Giving the method an argument (others will be
@@ -646,7 +646,7 @@ retrieved in the same way.
 These methods can also be used to set values, although changing
 any of the three affects the other two.
 
-   $element       = new Chemistry::Elements('Lead');
+   $element       = Chemistry::Elements->new('Lead');
 
    $atomic_number = $element->Z;    # $atomic_number is 82
 
@@ -684,11 +684,12 @@ Return the symbol of the element.
 
 =head2 Exportable functions
 
-These functions can be exported.  They are not exported by default.
+These functions can be exported.  They are not exported by default. At the
+moment, only the functional interface supports multi-language names.
 
 =over 4
 
-=item get_symbol( SYMBOL [, LANGUAGE] )
+=item get_symbol( NAME|Z )
 
 This function attempts to return the symbol of the chemical element given
 either the chemical symbol, element name, or atmoic number.  The
@@ -801,6 +802,10 @@ thought that anyone using this module would probably have their
 own data.  If there is an interest in canned data, perhaps I can
 provide mine :)
 
+=head2 Localization support
+
+XXX: Fill this stuff in later. For now see the test suite
+
 =head1 TO DO
 
 I would like make this module easily localizable so that one could
@@ -809,13 +814,19 @@ language or a different perspective on the heavy elements).  If
 anyone should make changes to the data, i would like to get a copy
 so that i can include it in future releases :)
 
+=head1 SOURCE AVAILABILITY
+
+The source for this module is in Github:
+
+	git://github.com/briandfoy/chemistry--elements.git
+
 =head1 AUTHOR
 
 brian d foy, C<< <bdfoy@cpan.org> >>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2000-2007 brian d foy. All rights reserved.
+Copyright (c) 2000-2008 brian d foy. All rights reserved.
 
 This program is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

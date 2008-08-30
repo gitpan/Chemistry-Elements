@@ -1,4 +1,4 @@
-# $Id: compile.t 1637 2005-05-25 00:19:32Z comdog $
+# $Id$
 BEGIN {
 	@classes = qw( Chemistry::Elements );
 	}
