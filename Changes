@@ -1,5 +1,9 @@
 Revision history for Perl extension Chemistry::Elements.
 
+1.07 - Sun Aug 31 13:34:07 2008
+	* Fix a problem with duplicate tests. I guess the TAP parser 
+	doesn't like that.
+
 1.06 - Sun Aug 31 10:00:57 2008
 	* Bump to a release version. There are no changes since the 
 	last development version.

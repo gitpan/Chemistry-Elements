@@ -17,7 +17,7 @@ require Exporter;
 @ISA       = qw(Exporter);
 @EXPORT_OK = qw(get_Z get_symbol get_name);
 @EXPORT    = qw();
-$VERSION   = '1.06';
+$VERSION   = '1.07';
 
 use subs qw(
 	_get_name_by_Z

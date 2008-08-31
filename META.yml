@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:                Chemistry-Elements
-version:             1.06
+version:             1.07
 abstract:            Perl extension for working with Chemical Elements
 license:             perl
 author:              
